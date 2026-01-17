@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ME-Frp 第三方客户端联盟 | ME-Frp TPCA</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+    <style>
+        /* * Material Design 3 (MD3) 蓝色主题配色系统
+         * 模拟 MD3 生成的 Tonal Palette
+         */
+        :root {
+            /* 核心颜色 */
+            --md-sys-color-primary: #0061A4;
+            --md-sys-color-on-primary: #FFFFFF;
+            --md-sys-color-primary-container: #D1E4FF;
+            --md-sys-color-on-primary-container: #001D36;
+            
+            --md-sys-color-secondary: #535F70;
+            --md-sys-color-on-secondary: #FFFFFF;
+            --md-sys-color-secondary-container: #D7E3F7;
+            --md-sys-color-on-secondary-container: #101C2B;
+            
+            --md-sys-color-tertiary: #6B5778;
+            --md-sys-color-on-tertiary: #FFFFFF;
+            --md-sys-color-tertiary-container: #F2DAFF;
+            --md-sys-color-on-tertiary-container: #251431;
+
+            --md-sys-color-background: #FDFCFF;
+            --md-sys-color-on-background: #1A1C1E;
+            
+            --md-sys-color-surface: #FDFCFF;
+            --md-sys-color-on-surface: #1A1C1E;
+            --md-sys-color-surface-variant: #DFE2EB;
+            --md-sys-color-on-surface-variant: #43474E;
+            
+            --md-sys-color-outline: #73777F;
+            --md-sys-color-outline-variant: #C3C7CF;
+
+            /* 阴影与形状 */
+            --md-sys-shape-corner-extra-small: 4px;
+            --md-sys-shape-corner-small: 8px;
+            --md-sys-shape-corner-medium: 12px;
+            --md-sys-shape-corner-large: 16px;
+            --md-sys-shape-corner-extra-large: 28px;
+            --md-sys-shape-corner-full: 9999px;
+
+            --md-sys-elevation-1: 0px 1px 2px 0px rgba(0,0,0,0.3), 0px 1px 3px 1px rgba(0,0,0,0.15);
+            --md-sys-elevation-2: 0px 1px 2px 0px rgba(0,0,0,0.3), 0px 2px 6px 2px rgba(0,0,0,0.15);
+            --md-sys-elevation-3: 0px 4px 8px 3px rgba(0,0,0,0.15), 0px 1px 3px 0px rgba(0,0,0,0.3);
+        }
+
+        /* 黑暗模式主题 */
+        body.dark-mode {
+            --md-sys-color-primary: #A8C8FF;
+            --md-sys-color-on-primary: #00315A;
+            --md-sys-color-primary-container: #004B7F;
+            --md-sys-color-on-primary-container: #D1E4FF;
+            
+            --md-sys-color-secondary: #BBC7DB;
+            --md-sys-color-on-secondary: #252F40;
+            --md-sys-color-secondary-container: #3D4957;
+            --md-sys-color-on-secondary-container: #D7E3F7;
+            
+            --md-sys-color-tertiary: #D5BFFF;
+            --md-sys-color-on-tertiary: #3D2849;
+            --md-sys-color-tertiary-container: #553960;
+            --md-sys-color-on-tertiary-container: #F2DAFF;
+
+            --md-sys-color-background: #1A1C1E;
+            --md-sys-color-on-background: #E6E1E6;
+            
+            --md-sys-color-surface: #1A1C1E;
+            --md-sys-color-on-surface: #E6E1E6;
+            --md-sys-color-surface-variant: #49454E;
+            --md-sys-color-on-surface-variant: #C9C7CE;
+            
+            --md-sys-color-outline: #928E97;
+            --md-sys-color-outline-variant: #49454E;
+
+            --md-sys-elevation-1: 0px 1px 2px 0px rgba(0,0,0,0.3), 0px 1px 3px 1px rgba(0,0,0,0.15);
+            --md-sys-elevation-2: 0px 1px 2px 0px rgba(0,0,0,0.3), 0px 2px 6px 2px rgba(0,0,0,0.15);
+            --md-sys-elevation-3: 0px 4px 8px 3px rgba(0,0,0,0.15), 0px 1px 3px 0px rgba(0,0,0,0.3);
+        }
+
+        /* 基础重置与排版 */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', 'Noto Sans SC', sans-serif;
+            background-color: var(--md-sys-color-background);
+            color: var(--md-sys-color-on-background);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            padding-top: 56px;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* 布局容器 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ----- 导航栏 (Top App Bar) ----- */
+        .top-app-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background-color: var(--md-sys-color-surface);
+            color: var(--md-sys-color-on-surface);
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            gap: 0;
+            height: 56px;
+            backdrop-filter: blur(30px) saturate(180%);
+            background-color: rgba(253, 252, 255, 0.7);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+        }
+
+        body.dark-mode .top-app-bar {
+            background-color: rgba(26, 28, 30, 0.7);
+        }
+        
+        /* 滚动时增加一点背景色变体 */
+        .top-app-bar.scrolled {
+            background-color: var(--md-sys-color-surface-container-low, #F3F3FA);
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 500; /* Regular weight for MD3 title */
+            color: var(--md-sys-color-primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+            height: 100%;
+            padding: 0 12px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-left: auto;
+            height: 100%;
+            padding: 0 12px;
+        }
+
+        .theme-toggle {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--md-sys-shape-corner-full);
+            border: none;
+            background-color: transparent;
+            color: var(--md-sys-color-on-surface);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: background-color 0.2s;
+        }
+
+        /* 主题切换过渡效果 */
+        @keyframes themeTransition {
+            0% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .theme-transition-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--md-sys-color-background);
+            pointer-events: none;
+            z-index: 10000;
+            animation: themeTransition 0.6s ease-in-out forwards;
+        }
+
+        .nav-item {
+            padding: 10px 16px;
+            border-radius: var(--md-sys-shape-corner-full);
+            color: var(--md-sys-color-on-surface-variant);
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .nav-item:hover {
+            background-color: rgba(0, 97, 164, 0.08); /* Primary color low opacity */
+            color: var(--md-sys-color-on-surface);
+        }
+
+        .nav-item.active {
+            background-color: var(--md-sys-color-secondary-container);
+            color: var(--md-sys-color-on-secondary-container);
+        }
+
+        .theme-toggle {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--md-sys-shape-corner-full);
+            border: none;
+            background-color: transparent;
+            color: var(--md-sys-color-on-surface);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: background-color 0.2s;
+        }
+
+        .theme-toggle:hover {
+            background-color: rgba(0, 97, 164, 0.08);
+        }
+
+        .color-picker-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--md-sys-shape-corner-full);
+            border: none;
+            background-color: transparent;
+            color: var(--md-sys-color-on-surface);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: background-color 0.2s;
+        }
+
+        .color-picker-btn:hover {
+            background-color: rgba(0, 97, 164, 0.08);
+        }
+
+        .color-picker-panel {
+            display: none;
+            position: fixed;
+            bottom: 70px;
+            right: 24px;
+            background-color: var(--md-sys-color-surface);
+            border-radius: var(--md-sys-shape-corner-medium);
+            box-shadow: var(--md-sys-elevation-3);
+            padding: 16px;
+            z-index: 99;
+            min-width: 280px;
+            backdrop-filter: blur(10px);
+        }
+
+        .color-picker-panel.open {
+            display: block;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .color-picker-header {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--md-sys-color-on-surface);
+            margin-bottom: 12px;
+        }
+
+        .color-picker-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .color-option {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 8px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+
+        .color-option.active {
+            border-color: var(--md-sys-color-on-surface);
+        }
+
+        .menu-toggle {
+            display: none;
+            width: 40px;
+            height: 40px;
+            border-radius: var(--md-sys-shape-corner-full);
+            border: none;
+            background-color: transparent;
+            color: var(--md-sys-color-on-surface);
+            cursor: pointer;
+            font-size: 20px;
+            transition: background-color 0.2s;
+            margin-right: auto;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            visibility: hidden;
+        }
+
+        .menu-toggle span {
+            display: none;
+        }
+
+        .menu-toggle:hover {
+            background-color: rgba(0, 97, 164, 0.08);
+        }
+
+        .mobile-menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(4px);
+            background-color: rgba(0, 0, 0, 0.3);
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .mobile-menu-overlay.open {
+            display: block;
+            opacity: 1;
+        }
+
+        @keyframes slideInMenu {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOutMenu {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 280px;
+            max-width: 80vw;
+            height: 100vh;
+            background-color: var(--md-sys-color-surface);
+            z-index: 101;
+            overflow-y: auto;
+            padding-top: 80px;
+            animation: slideInMenu 0.3s ease-out;
+        }
+
+        .mobile-menu.closing {
+            animation: slideOutMenu 0.3s ease-in;
+        }
+
+        .mobile-menu.open {
+            display: block;
+        }
+
+        .mobile-menu a {
+            display: block;
+            padding: 16px 24px;
+            color: var(--md-sys-color-on-surface);
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+            border-bottom: 1px solid var(--md-sys-color-outline-variant);
+        }
+
+        .mobile-menu a:hover {
+            background-color: rgba(0, 97, 164, 0.08);
+        }
+
+        .nav-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+            height: 100%;
+            padding: 0 12px;
+        }
+
+        /* ----- Hero 区域 ----- */
+        .hero {
+            padding: 80px 0;
+            text-align: center;
+            background: linear-gradient(180deg, var(--md-sys-color-primary-container) 0%, var(--md-sys-color-background) 100%);
+            border-bottom-left-radius: var(--md-sys-shape-corner-extra-large);
+            border-bottom-right-radius: var(--md-sys-shape-corner-extra-large);
+            margin-bottom: 48px;
+            margin-top: -56px;
+            padding-top: 136px;
+        }
+
+        @keyframes fadeInBlur {
+            from {
+                opacity: 0;
+                filter: blur(10px);
+            }
+            to {
+                opacity: 1;
+                filter: blur(0);
+            }
+        }
+
+        @keyframes floatGlow {
+            0% {
+                transform: scale(1);
+                box-shadow: var(--md-sys-elevation-2);
+            }
+            50% {
+                transform: scale(1.02);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0px 8px 16px 4px rgba(0, 97, 164, 0.25), 0px 2px 6px 2px rgba(0, 97, 164, 0.15);
+            }
+        }
+
+        .hero h1 {
+            font-size: 57px; /* Display Large */
+            line-height: 64px;
+            font-weight: 700;
+            color: var(--md-sys-color-on-surface);
+            margin-bottom: 24px;
+            animation: fadeInBlur 0.8s ease-out;
+        }
+
+        .hero p {
+            font-size: 22px; /* Headline Large */
+            line-height: 28px;
+            font-weight: 400;
+            color: var(--md-sys-color-on-surface-variant);
+            max-width: 700px;
+            margin: 0 auto 40px;
+            animation: fadeInBlur 0.8s ease-out 0.2s both;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        /* MD3 按钮风格 */
+        .btn {
+            height: 40px;
+            padding: 0 24px;
+            border-radius: var(--md-sys-shape-corner-full);
+            font-size: 14px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: box-shadow 0.2s, background 0.2s;
+            gap: 8px;
+        }
+
+        .btn-filled {
+            background-color: var(--md-sys-color-primary);
+            color: var(--md-sys-color-on-primary);
+            border: none;
+        }
+
+        .btn-filled:hover {
+            box-shadow: var(--md-sys-elevation-1);
+            background-color: rgba(0, 97, 164, 0.92);
+        }
+
+        .btn-tonal {
+            background-color: var(--md-sys-color-secondary-container);
+            color: var(--md-sys-color-on-secondary-container);
+            border: none;
+        }
+
+        .btn-tonal:hover {
+            box-shadow: var(--md-sys-elevation-1);
+            background-color: rgba(215, 227, 247, 0.92);
+        }
+        
+        .btn-outlined {
+            background-color: transparent;
+            border: 1px solid var(--md-sys-color-outline);
+            color: var(--md-sys-color-primary);
+        }
+
+        .btn-deep-blue {
+            background-color: #0061A4;
+            color: white;
+            border: none;
+        }
+
+        .btn-deep-blue:hover {
+            box-shadow: var(--md-sys-elevation-1);
+            background-color: #004A7A;
+        }
+
+        /* ----- 版块通用 ----- */
+        .section-title {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .section-title h2 {
+            font-size: 32px; /* Headline Small */
+            font-weight: 400;
+            color: var(--md-sys-color-on-surface);
+        }
+        
+        .section-title p {
+            font-size: 16px;
+            color: var(--md-sys-color-on-surface-variant);
+            margin-top: 8px;
+        }
+
+        /* ----- 产品卡片 (MD3 Card) ----- */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            padding-bottom: 80px;
+        }
+
+        .card {
+            background-color: var(--md-sys-color-surface);
+            border-radius: var(--md-sys-shape-corner-medium);
+            /* MD3 Elevated Card style */
+            box-shadow: var(--md-sys-elevation-1);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            transition: box-shadow 0.2s, background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: var(--md-sys-elevation-2);
+        }
+
+        .card.floating {
+            animation: floatGlow 0.6s ease-in-out forwards;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            gap: 16px;
+        }
+
+        .card-icon {
+            width: 56px;
+            height: 56px;
+            background-color: var(--md-sys-color-primary-container);
+            color: var(--md-sys-color-on-primary-container);
+            border-radius: var(--md-sys-shape-corner-medium);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .card-title-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-title {
+            font-size: 22px;
+            font-weight: 500; /* Title Large */
+            color: var(--md-sys-color-on-surface);
+        }
+
+        .card-subtitle {
+            font-size: 14px;
+            color: var(--md-sys-color-primary);
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        .card-body {
+            font-size: 14px; /* Body Medium */
+            color: var(--md-sys-color-on-surface-variant);
+            line-height: 20px;
+            margin-bottom: 24px;
+            flex-grow: 1;
+        }
+        
+        .card-tags {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        
+        .tag {
+            background-color: var(--md-sys-color-surface-variant);
+            color: var(--md-sys-color-on-surface-variant);
+            padding: 4px 12px;
+            border-radius: 8px; /* Assist Chip shape */
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .card-actions {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        /* ----- 团队头像 ----- */
+        .team-section {
+            background-color: var(--md-sys-color-surface-variant); /* 区分背景 */
+            padding: 80px 0;
+            border-radius: var(--md-sys-shape-corner-extra-large);
+            margin-bottom: 80px;
+        }
+
+        .team-grid {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 48px;
+        }
+
+        .team-member {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: var(--md-sys-color-primary-container);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: var(--md-sys-color-on-primary-container);
+            overflow: hidden;
+        }
+        
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .member-name {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--md-sys-color-on-surface);
+        }
+
+        .member-role {
+            font-size: 12px;
+            color: var(--md-sys-color-on-surface-variant);
+            margin-top: 4px;
+        }
+
+        /* ----- 页脚 ----- */
+        footer {
+            background-color: var(--md-sys-color-surface);
+            padding: 40px 0;
+            text-align: center;
+            color: var(--md-sys-color-on-surface-variant);
+            font-size: 12px;
+            border-top: 1px solid var(--md-sys-color-outline-variant);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .stat-item h3 {
+            font-size: 32px;
+            color: var(--md-sys-color-primary);
+            font-weight: 700;
+        }
+
+        .stat-item p {
+            font-size: 14px;
+        }
+
+        .footer-links a {
+            margin: 0 12px;
+            color: var(--md-sys-color-primary);
+            font-weight: 500;
+        }
+
+        /* 响应式 */
+        @media (max-width: 600px) {
+            .hero { 
+                padding: 40px 0;
+                margin-top: -56px;
+                padding-top: 96px;
+                margin-bottom: 32px;
+            }
+
+            .hero h1 { 
+                font-size: 32px; 
+                line-height: 40px; 
+                margin-bottom: 16px;
+            }
+
+            .hero p { 
+                font-size: 14px; 
+                line-height: 20px;
+                margin-bottom: 24px;
+            }
+
+            .nav-links { 
+                gap: 0;
+            }
+
+            .nav-item {
+                padding: 8px 12px;
+                font-size: 12px;
+                display: none;
+            }
+
+            .menu-toggle {
+                display: flex;
+                width: 36px;
+                height: 36px;
+                font-size: 18px;
+                visibility: visible;
+            }
+
+            .menu-toggle span {
+                display: block;
+            }
+
+            .theme-toggle {
+                width: 36px;
+                height: 36px;
+                font-size: 18px;
+            }
+
+            .btn-group { 
+                flex-direction: column; 
+                align-items: stretch; 
+                padding: 0 16px;
+                gap: 12px;
+            }
+
+            .btn {
+                height: 36px;
+                padding: 0 16px;
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 0 16px;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+                padding-bottom: 40px;
+            }
+
+            .card {
+                padding: 16px;
+            }
+
+            .card-header {
+                gap: 12px;
+                margin-bottom: 12px;
+            }
+
+            .card-icon {
+                width: 44px;
+                height: 44px;
+                font-size: 18px;
+            }
+
+            .card-title {
+                font-size: 18px;
+            }
+
+            .card-subtitle {
+                font-size: 12px;
+            }
+
+            .card-body {
+                font-size: 13px;
+                line-height: 18px;
+                margin-bottom: 16px;
+            }
+
+            .card-tags {
+                gap: 6px;
+                margin-bottom: 12px;
+            }
+
+            .tag {
+                font-size: 11px;
+                padding: 3px 8px;
+            }
+
+            .team-section {
+                padding: 40px 0;
+                margin-bottom: 40px;
+            }
+
+            .team-grid {
+                gap: 24px;
+            }
+
+            .avatar {
+                width: 80px;
+                height: 80px;
+                font-size: 28px;
+                margin-bottom: 12px;
+            }
+
+            .member-name {
+                font-size: 14px;
+            }
+
+            .member-role {
+                font-size: 11px;
+            }
+
+            .section-title h2 {
+                font-size: 24px;
+            }
+
+            .section-title p {
+                font-size: 14px;
+            }
+
+            .stats {
+                flex-direction: column;
+                gap: 24px;
+                margin-bottom: 24px;
+            }
+
+            .stat-item h3 {
+                font-size: 24px;
+            }
+
+            .stat-item p {
+                font-size: 12px;
+            }
+
+            footer {
+                padding: 24px 0;
+                font-size: 11px;
+            }
+
+            .footer-links a {
+                margin: 0 6px;
+                font-size: 12px;
+            }
+
+            .logo {
+                font-size: 18px;
+            }
+
+            .top-app-bar {
+                padding: 10px 0;
+            }
+
+            .color-picker-panel {
+                bottom: 60px;
+                right: 12px;
+                min-width: 240px;
+            }
+
+            .color-picker-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header class="top-app-bar">
+            <div class="nav-container">
+                <button class="menu-toggle" id="menuToggle" title="菜单">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+            </div>
+            <div class="logo">
+                <span class="material-symbols-outlined" style="color: var(--md-sys-color-primary);">hub</span>
+                ME-Frp TPCA
+            </div>
+            <nav class="nav-links">
+                <a href="#" class="nav-item active">首页</a>
+                <a href="#products" class="nav-item">产品</a>
+                <a href="#about" class="nav-item">关于</a>
+                <a href="#docs" class="nav-item">文档</a>
+                <button class="color-picker-btn" id="colorPickerBtn" title="调色盘">
+                    <span class="material-symbols-outlined">palette</span>
+                </button>
+                <button class="theme-toggle" id="themeToggle" title="切换主题">
+                    <span class="material-symbols-outlined">light_mode</span>
+                </button>
+            </nav>
+        </header>
+    </div>
+
+    <div class="color-picker-panel" id="colorPickerPanel">
+        <div class="color-picker-header">选择主题色</div>
+        <div class="color-picker-grid">
+            <button class="color-option" data-color="#0061A4" style="background-color: #0061A4;" title="蓝色"></button>
+            <button class="color-option" data-color="#D32F2F" style="background-color: #D32F2F;" title="红色"></button>
+            <button class="color-option" data-color="#F57C00" style="background-color: #F57C00;" title="橙色"></button>
+            <button class="color-option" data-color="#FBC02D" style="background-color: #FBC02D;" title="黄色"></button>
+            <button class="color-option" data-color="#388E3C" style="background-color: #388E3C;" title="绿色"></button>
+            <button class="color-option" data-color="#1976D2" style="background-color: #1976D2;" title="深蓝"></button>
+            <button class="color-option" data-color="#7B1FA2" style="background-color: #7B1FA2;" title="紫色"></button>
+            <button class="color-option" data-color="#C2185B" style="background-color: #C2185B;" title="粉红"></button>
+            <button class="color-option" data-color="#00796B" style="background-color: #00796B;" title="青色"></button>
+            <button class="color-option" data-color="#5E35B1" style="background-color: #5E35B1;" title="深紫"></button>
+            <button class="color-option" data-color="#0097A7" style="background-color: #0097A7;" title="深青"></button>
+            <button class="color-option" data-color="#F44336" style="background-color: #F44336;" title="亮红"></button>
+        </div>
+    </div>
+
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#">首页</a>
+        <a href="#products">产品</a>
+        <a href="#about">关于</a>
+        <a href="#docs">文档</a>
+    </div>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>MEFrp第三方客户端联盟</h1>
+                <p>专注于 ME-Frp 第三方客户端开发，为用户提供更美观、更便捷、更强大的内网穿透体验。</p>
+                <div class="btn-group">
+                    <button class="btn btn-filled" onclick="document.getElementById('products').scrollIntoView({behavior: 'smooth'})">
+                        <span class="material-symbols-outlined">rocket_launch</span>
+                        探索产品
+                    </button>
+                    <button class="btn btn-tonal" onclick="document.getElementById('about').scrollIntoView({behavior: 'smooth'})">
+                        <span class="material-symbols-outlined">info</span>
+                        了解更多
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="container" id="products">
+            <div class="section-title">
+                <h2>我们的产品</h2>
+                <p>满足不同需求的多样化解决方案</p>
+            </div>
+
+            <div class="products-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">XL</div>
+                        <div class="card-title-group">
+                            <span class="card-title">XL-Launcher</span>
+                            <span class="card-subtitle">v1.5.5 • Yealqp</span>
+                        </div>
+                    </div>
+                    <div class="card-tags">
+                        <span class="tag">Tauri</span>
+                        <span class="tag">高仿官网</span>
+                        <span class="tag">轻量级</span>
+                    </div>
+                    <p class="card-body">
+                        使用 Tauri 框架开发，界面高仿官网样式。可能是目前最美观、包体最小、且 Bug 最少的客户端。
+                    </p>
+                    <div class="card-actions">
+                        <button class="btn btn-deep-blue">查看详情</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background-color: var(--md-sys-color-tertiary-container); color: var(--md-sys-color-on-tertiary-container);">LX</div>
+                        <div class="card-title-group">
+                            <span class="card-title">LX-Launcher</span>
+                            <span class="card-subtitle">v2.3.0 • 灵弦MuaMua</span>
+                        </div>
+                    </div>
+                    <div class="card-tags">
+                        <span class="tag">易语言</span>
+                        <span class="tag">Exui</span>
+                        <span class="tag">Windows风格</span>
+                    </div>
+                    <p class="card-body">
+                        由灵弦MuaMua使用易语言和Exui开发，界面高仿官方图形化 V4.0 版本，经典且易用。
+                    </p>
+                    <div class="card-actions">
+                        <button class="btn btn-deep-blue">查看详情</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background-color: var(--md-sys-color-secondary-container); color: var(--md-sys-color-on-secondary-container);">PML</div>
+                        <div class="card-title-group">
+                            <span class="card-title">Plain Launcher</span>
+                            <span class="card-subtitle">v2.1.0 • RYCB工作室</span>
+                        </div>
+                    </div>
+                    <div class="card-tags">
+                        <span class="tag">.NET</span>
+                        <span class="tag">跨平台</span>
+                        <span class="tag">多系统支持</span>
+                    </div>
+                    <p class="card-body">
+                        基于 .NET 开发，支持 Windows, Linux, MacOS, Android。是目前唯一真正跨平台的产品。
+                    </p>
+                    <div class="card-actions">
+                        <button class="btn btn-deep-blue">查看详情</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="container" id="about">
+            <section class="team-section">
+                <div class="section-title">
+                    <h2>团队成员</h2>
+                    <p>一群热爱技术、勇于创新的开发者</p>
+                </div>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="avatar"><img src="http://i0.hdslb.com/bfs/new_dyn/69575be4ee96c648d0db30bfbb0300991354647756.jpg" alt="Yealqp"></div>
+                        <span class="member-name">Yealqp</span>
+                        <span class="member-role">DevOps / 创始人</span>
+                    </div>
+                    <div class="team-member">
+                        <div class="avatar">L</div>
+                        <span class="member-name">灵弦MuaMua</span>
+                        <span class="member-role">创始人 / 成员</span>
+                    </div>
+                    <div class="team-member">
+                        <div class="avatar"><img src="http://i0.hdslb.com/bfs/new_dyn/59544da9c8455d480de7815d7709e71b1354647756.jpg" alt="QYF"></div>
+                        <span class="member-name">QYF</span>
+                        <span class="member-role">创始人 / 成员</span>
+                    </div>
+                    <div class="team-member">
+                        <div class="avatar"><img src="http://i0.hdslb.com/bfs/new_dyn/241f760d3dcbed4790366092d3e39d2a1354647756.jpg" alt="ZeroSnow"></div>
+                        <span class="member-name">ZeroSnow</span>
+                        <span class="member-role">网盘维护者</span>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <section class="container stats">
+            <div class="stat-item">
+                <h3>3+</h3>
+                <p>客户端产品</p>
+            </div>
+            <div class="stat-item">
+                <h3>4+</h3>
+                <p>团队成员</p>
+            </div>
+            <div class="stat-item">
+                <h3>100%</h3>
+                <p>社区驱动</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p style="margin-bottom: 16px;">
+                Copyright © 2026 ME-Frp Third-Party Client Alliance.
+            </p>
+            <div class="footer-links">
+                <a href="#">Github</a>
+                <a href="#">MCSLTeam 官网</a>
+                <a href="#">冀ICP备2025123259号-2</a>
+            </div>
+            <p style="margin-top: 24px; color: var(--md-sys-color-outline);">
+                特别鸣谢: 落雪无痕LxHTT | MCSLTeam-Website-Next | 仙林云计算
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // 系统主题色取色机制
+        const updateThemeFromSystem = () => {
+            // 检测系统深色模式
+            const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            // 如果系统是深色模式，应用深色主题
+            if (prefersDarkMode && !document.body.classList.contains('dark-mode')) {
+                // 不自动应用，让用户自己选择
+                return;
+            }
+        };
+
+        // 监听系统主题色变化
+        const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        darkModeMediaQuery.addListener((e) => {
+            // 系统主题改变时的回调
+            console.log('系统主题色已改变:', e.matches ? '深色' : '浅色');
+        });
+
+        // 初始化时检查
+        updateThemeFromSystem();
+
+        // 更新主题色的函数
+        const updatePrimaryColor = (hexColor) => {
+            // 从十六进制颜色中提取 RGB
+            const rgb = parseInt(hexColor.slice(1), 16);
+            const r = (rgb >> 16) & 255;
+            const g = (rgb >> 8) & 255;
+            const b = rgb & 255;
+
+            // 计算更亮的容器颜色（用于 primary-container）
+            const containerRgb = {
+                r: Math.min(255, Math.round(r + (255 - r) * 0.8)),
+                g: Math.min(255, Math.round(g + (255 - g) * 0.8)),
+                b: Math.min(255, Math.round(b + (255 - b) * 0.8))
+            };
+
+            const containerHex = `#${((containerRgb.r << 16) | (containerRgb.g << 8) | containerRgb.b).toString(16).padStart(6, '0').toUpperCase()}`;
+
+            // 计算更深的颜色（用于 on-primary）
+            const darkRgb = {
+                r: Math.round(r * 0.3),
+                g: Math.round(g * 0.3),
+                b: Math.round(b * 0.3)
+            };
+
+            const darkHex = `#${((darkRgb.r << 16) | (darkRgb.g << 8) | darkRgb.b).toString(16).padStart(6, '0').toUpperCase()}`;
+
+            // 为黑暗模式计算浅色变体
+            const lightRgb = {
+                r: Math.min(255, Math.round(r + (255 - r) * 0.6)),
+                g: Math.min(255, Math.round(g + (255 - g) * 0.6)),
+                b: Math.min(255, Math.round(b + (255 - b) * 0.6))
+            };
+
+            const lightHex = `#${((lightRgb.r << 16) | (lightRgb.g << 8) | lightRgb.b).toString(16).padStart(6, '0').toUpperCase()}`;
+
+            // 应用 CSS 变量到根元素（浅色模式）
+            document.documentElement.style.setProperty('--md-sys-color-primary', hexColor);
+            document.documentElement.style.setProperty('--md-sys-color-primary-container', containerHex);
+            document.documentElement.style.setProperty('--md-sys-color-on-primary-container', darkHex);
+
+            // 如果是深色模式，也需要重新应用颜色
+            if (document.body.classList.contains('dark-mode')) {
+                // 创建一个 style 标签来覆盖深色模式下的颜色
+                let darkModeStyle = document.getElementById('darkModeColorOverride');
+                if (!darkModeStyle) {
+                    darkModeStyle = document.createElement('style');
+                    darkModeStyle.id = 'darkModeColorOverride';
+                    document.head.appendChild(darkModeStyle);
+                }
+                
+                darkModeStyle.textContent = `
+                    body.dark-mode {
+                        --md-sys-color-primary: ${lightHex} !important;
+                        --md-sys-color-primary-container: ${hexColor} !important;
+                        --md-sys-color-on-primary-container: ${lightHex} !important;
+                    }
+                `;
+            }
+
+            // 保存到 localStorage
+            localStorage.setItem('primaryColor', hexColor);
+
+            // 更新活跃颜色选项
+            document.querySelectorAll('.color-option').forEach(option => {
+                if (option.dataset.color === hexColor) {
+                    option.classList.add('active');
+                } else {
+                    option.classList.remove('active');
+                }
+            });
+        };
+
+        // 从 localStorage 恢复颜色
+        const savedColor = localStorage.getItem('primaryColor');
+        if (savedColor) {
+            updatePrimaryColor(savedColor);
+        }
+
+        // 颜色选择器交互
+        const colorPickerBtn = document.getElementById('colorPickerBtn');
+        const colorPickerPanel = document.getElementById('colorPickerPanel');
+
+        colorPickerBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            colorPickerPanel.classList.toggle('open');
+        });
+
+        // 颜色选项点击
+        document.querySelectorAll('.color-option').forEach(option => {
+            option.addEventListener('click', () => {
+                const color = option.dataset.color;
+                updatePrimaryColor(color);
+                colorPickerPanel.classList.remove('open');
+            });
+        });
+
+        // 点击页面其他地方关闭调色盘（但不关闭菜单）
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('#colorPickerPanel') && !e.target.closest('#colorPickerBtn')) {
+                colorPickerPanel.classList.remove('open');
+            }
+        });
+
+        // 黑暗模式切换
+        const themeToggle = document.getElementById('themeToggle');
+        const isDarkMode = localStorage.getItem('darkMode') === 'true';
+
+        // 初始化主题
+        if (isDarkMode) {
+            document.body.classList.add('dark-mode');
+            themeToggle.innerHTML = '<span class="material-symbols-outlined">dark_mode</span>';
+        }
+
+        // 切换主题
+        themeToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            // 创建过渡层
+            const overlay = document.createElement('div');
+            overlay.className = 'theme-transition-overlay';
+            document.body.appendChild(overlay);
+
+            // 切换主题
+            document.body.classList.toggle('dark-mode');
+            const isCurrentlyDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isCurrentlyDark);
+            themeToggle.innerHTML = isCurrentlyDark 
+                ? '<span class="material-symbols-outlined">dark_mode</span>'
+                : '<span class="material-symbols-outlined">light_mode</span>';
+
+            // 如果有保存的主题色，在切换深浅模式时重新应用
+            const savedColor = localStorage.getItem('primaryColor');
+            if (savedColor) {
+                updatePrimaryColor(savedColor);
+            }
+
+            // 动画完成后移除过渡层
+            setTimeout(() => {
+                overlay.remove();
+            }, 600);
+        });
+
+        // 菜单切换 - 仅在手机端启用
+        const isMobile = window.innerWidth <= 600;
+        if (isMobile) {
+            const menuToggle = document.getElementById('menuToggle');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+
+            menuToggle.addEventListener('click', function() {
+                mobileMenu.classList.toggle('open');
+                mobileMenuOverlay.classList.toggle('open');
+            });
+
+            // 点击菜单项后关闭菜单
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function() {
+                    closeMenu();
+                });
+            });
+
+            // 点击遮罩关闭菜单
+            mobileMenuOverlay.addEventListener('click', function() {
+                closeMenu();
+            });
+
+            // 关闭菜单的函数
+            function closeMenu() {
+                mobileMenu.classList.add('closing');
+                mobileMenuOverlay.classList.remove('open');
+                
+                setTimeout(() => {
+                    mobileMenu.classList.remove('open');
+                    mobileMenu.classList.remove('closing');
+                }, 300);
+            }
+        }
+
+        // 为卡片添加浮动效果
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.classList.add('floating');
+            });
+            card.addEventListener('mouseleave', function() {
+                this.classList.remove('floating');
+            });
+        });
+    </script>
+</body>
+</html>
