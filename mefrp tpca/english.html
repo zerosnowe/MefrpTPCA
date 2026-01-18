@@ -208,64 +208,13 @@
             animation: themeTransition 0.6s ease-in-out forwards;
         }
 
-        @keyframes ripple {
-            0% {
-                transform: scale(0);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(4);
-                opacity: 0;
-            }
-        }
-
-        @keyframes colorBlockExpand {
-            0% {
-                clip-path: circle(0% at center);
-            }
-            100% {
-                clip-path: circle(100% at center);
-            }
-        }
-
         .nav-item {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
             padding: 10px 16px;
             border-radius: var(--md-sys-shape-corner-full);
-            color: var(--md-sys-color-on-surface-variant); /* 默认黑色 */
+            color: var(--md-sys-color-on-surface-variant);
             font-size: 14px;
             font-weight: 500;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-        }
-
-        .nav-item::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 100%;
-            height: 100%;
-            background-color: #004A7A; /* 深蓝色 */
-            border-radius: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .nav-item.ripple-active::before {
-            animation: colorBlockExpand 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
-
-        .nav-item .material-symbols-outlined {
-            font-size: 20px;
-            line-height: 1;
-            display: inline-block;
-            vertical-align: middle;
+            transition: background-color 0.2s, color 0.2s;
         }
 
         .nav-item:hover {
@@ -273,14 +222,9 @@
             color: var(--md-sys-color-on-surface);
         }
 
-        .nav-item.active,
-        .nav-item.ripple-active {
-            color: #FFFFFF !important; /* 强制覆盖 */
-        }
-
         .nav-item.active {
+            background-color: var(--md-sys-color-secondary-container);
             color: var(--md-sys-color-on-secondary-container);
-            background-color: #004A7A; /* 深蓝色 */
         }
 
         .theme-toggle {
@@ -302,15 +246,6 @@
             background-color: rgba(0, 97, 164, 0.08);
         }
 
-        @keyframes rotatePalette {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
         .color-picker-btn {
             width: 40px;
             height: 40px;
@@ -323,15 +258,11 @@
             align-items: center;
             justify-content: center;
             font-size: 20px;
-            transition: background-color 0.2s, transform 0.3s ease;
+            transition: background-color 0.2s;
         }
 
         .color-picker-btn:hover {
             background-color: rgba(0, 97, 164, 0.08);
-        }
-
-        .color-picker-btn.active {
-            animation: rotatePalette 0.6s ease-in-out;
         }
 
         .color-picker-panel {
@@ -377,27 +308,13 @@
             gap: 8px;
         }
 
-        @keyframes colorPulse {
-            0% {
-                transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(0, 97, 164, 0.7);
-            }
-            50% {
-                transform: scale(1.05);
-            }
-            100% {
-                transform: scale(1);
-                box-shadow: 0 0 0 8px rgba(0, 97, 164, 0);
-            }
-        }
-
         .color-option {
             width: 100%;
             aspect-ratio: 1;
             border-radius: 8px;
             border: 2px solid transparent;
             cursor: pointer;
-            transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+            transition: border-color 0.2s, transform 0.2s;
         }
 
         .color-option:hover {
@@ -406,8 +323,6 @@
 
         .color-option.active {
             border-color: var(--md-sys-color-on-surface);
-            animation: colorPulse 0.6s ease-out;
-            box-shadow: 0 0 12px 2px rgba(0, 97, 164, 0.3);
         }
 
         .menu-toggle {
@@ -566,7 +481,7 @@
             font-size: 57px; /* Display Large */
             line-height: 64px;
             font-weight: 700;
-            color: var(--md-sys-color-primary);
+            color: var(--md-sys-color-on-surface);
             margin-bottom: 24px;
             animation: fadeInBlur 0.8s ease-out;
         }
@@ -840,15 +755,6 @@
             font-weight: 500;
         }
 
-        /* 防止 Material Symbols 图标加载时卡出字符 */
-        .material-symbols-outlined {
-            font-visibility: hidden;
-        }
-
-        @font-face {
-            font-display: swap;
-        }
-
         /* 响应式 */
         @media (max-width: 600px) {
             .hero { 
@@ -1034,20 +940,6 @@
                 grid-template-columns: repeat(4, 1fr);
             }
         }
-
-        @keyframes cardFadeInUp {
-            0% {
-                opacity: 0;
-                transform: translateY(32px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .card.card-animate-in {
-            animation: cardFadeInUp 0.7s cubic-bezier(0.4,0,0.2,1) both;
-        }
     </style>
 </head>
 <body>
@@ -1064,20 +956,10 @@
                 ME-Frp TPCA
             </div>
             <nav class="nav-links">
-                <a href="https://www.rainyun.com/NzQzMDc=_" rel="external" style="display: inline-flex; align-items: center; justify-content: center; padding: 8px 20px; background: linear-gradient(90deg, #007bff 0%, #4a90e2 100% ); color: white; text-decoration: none; border-radius: 50px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-weight: bold; font-size: 14px; line-height: 1; box-shadow: 0 2px 8px rgba(0, 123, 255, 0.2); border: none; cursor: pointer;">
-    <span style="font-style: italic; margin-right: 6px; opacity: 0.9; font-size: 13px;">恰饭广告</span>
-    <span style="margin: 0 6px; font-size: 16px;">🎉</span>
-    <span style="letter-spacing: 0.2px;">点击获取雨云优惠→</span>
-</a>
-
-</a>
-
-</a>
-
-                <a href="#" class="nav-item active"><span class="material-symbols-outlined">home</span>首页</a>
-                <a href="#products" class="nav-item"><span class="material-symbols-outlined">widgets</span>产品</a>
-                <a href="#about" class="nav-item"><span class="material-symbols-outlined">info</span>关于</a>
-                <a href="https://mefrp-tpca.yealqp.cn/docs/" class="nav-item" target="_blank"><span class="material-symbols-outlined">article</span>文档</a>
+                <a href="#" class="nav-item active">首页</a>
+                <a href="#products" class="nav-item">产品</a>
+                <a href="#about" class="nav-item">关于</a>
+                <a href="https://mefrp-tpca.yealqp.cn/docs/" class="nav-item" target="_blank">文档</a>
                 <button class="color-picker-btn" id="colorPickerBtn" title="调色盘">
                     <span class="material-symbols-outlined">palette</span>
                 </button>
@@ -1089,21 +971,8 @@
     </div>
 
     <div class="color-picker-panel" id="colorPickerPanel">
-        <div class="color-picker-header">选择主题色</div>
-        <div class="color-picker-grid">
-            <button class="color-option" data-color="#0061A4" style="background-color: #0061A4;" title="蓝色"></button>
-            <button class="color-option" data-color="#D32F2F" style="background-color: #D32F2F;" title="红色"></button>
-            <button class="color-option" data-color="#F57C00" style="background-color: #F57C00;" title="橙色"></button>
-            <button class="color-option" data-color="#FBC02D" style="background-color: #FBC02D;" title="黄色"></button>
-            <button class="color-option" data-color="#388E3C" style="background-color: #388E3C;" title="绿色"></button>
-            <button class="color-option" data-color="#1976D2" style="background-color: #1976D2;" title="深蓝"></button>
-            <button class="color-option" data-color="#7B1FA2" style="background-color: #7B1FA2;" title="紫色"></button>
-            <button class="color-option" data-color="#C2185B" style="background-color: #C2185B;" title="粉红"></button>
-            <button class="color-option" data-color="#00796B" style="background-color: #00796B;" title="青色"></button>
-            <button class="color-option" data-color="#5E35B1" style="background-color: #5E35B1;" title="深紫"></button>
-            <button class="color-option" data-color="#0097A7" style="background-color: #0097A7;" title="深青"></button>
-            <button class="color-option" data-color="#F44336" style="background-color: #F44336;" title="亮红"></button>
-        </div>
+        <div class="color-picker-header">选择颜色</div>
+        <canvas id="colorPalette" width="280" height="150" style="border-radius: var(--md-sys-shape-corner-medium);"></canvas>
     </div>
 
     <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
@@ -1129,26 +998,7 @@
                         了解更多
                     </button>
                 </div>
-
-                <div class="stats" style="margin-top: 48px; margin-bottom: 0;">
-                    <div class="stat-item">
-                        <h3>3+</h3>
-                        <p>客户端产品</p>
-                    </div>
-                    <div class="stat-item">
-                        <h3>4+</h3>
-                        <p>团队成员</p>
-                    </div>
-                    <div class="stat-item">
-                        <h3>100%</h3>
-                        <p>社区驱动</p>
-                    </div>
-                    
-                </div>
             </div>
-           
-
-
         </section>
 
         <section class="container" id="products">
@@ -1254,7 +1104,20 @@
             </section>
         </div>
         
-
+        <section class="container stats">
+            <div class="stat-item">
+                <h3>3+</h3>
+                <p>客户端产品</p>
+            </div>
+            <div class="stat-item">
+                <h3>4+</h3>
+                <p>团队成员</p>
+            </div>
+            <div class="stat-item">
+                <h3>100%</h3>
+                <p>社区驱动</p>
+            </div>
+        </section>
     </main>
 
     <footer>
@@ -1267,8 +1130,7 @@
                 <a href="#">MCSLTeam 官网</a>
             </div>
             <p style="margin-top: 24px; color: var(--md-sys-color-outline);">
-                特别鸣谢: 落雪无痕LxHTT | MCSLTeam-Website-Next | 仙林云计算 | 雨云云计算
-                  
+                特别鸣谢: 落雪无痕LxHTT | MCSLTeam-Website-Next | 仙林云计算
             </p>
         </div>
     </footer>
@@ -1383,28 +1245,43 @@
             colorPickerPanel.classList.toggle('open');
         });
 
-        // 颜色选项点击
-        document.querySelectorAll('.color-option').forEach(option => {
-            option.addEventListener('click', () => {
-                const color = option.dataset.color;
-                updatePrimaryColor(color);
-                colorPickerPanel.classList.remove('open');
-                
-                // 触发调色盘按钮旋转动画
-                colorPickerBtn.classList.remove('active');
-                void colorPickerBtn.offsetWidth; // 强制重排以重启动画
-                colorPickerBtn.classList.add('active');
-                setTimeout(() => {
-                    colorPickerBtn.classList.remove('active');
-                }, 600);
-            });
-        });
+        // 颜色渐变调色盘
+        const canvas = document.getElementById('colorPalette');
+        const ctx = canvas.getContext('2d');
 
-        // 点击页面其他地方关闭调色盘（但不关闭菜单）
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('#colorPickerPanel') && !e.target.closest('#colorPickerBtn')) {
-                colorPickerPanel.classList.remove('open');
-            }
+        // 绘制颜色渐变
+        const drawColorPalette = () => {
+            const gradientX = ctx.createLinearGradient(0, 0, canvas.width, 0);
+            gradientX.addColorStop(0, 'red');
+            gradientX.addColorStop(0.16, 'yellow');
+            gradientX.addColorStop(0.33, 'lime');
+            gradientX.addColorStop(0.5, 'cyan');
+            gradientX.addColorStop(0.66, 'blue');
+            gradientX.addColorStop(0.83, 'magenta');
+            gradientX.addColorStop(1, 'red');
+            ctx.fillStyle = gradientX;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const gradientY = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradientY.addColorStop(0, 'rgba(255, 255, 255, 1)');
+            gradientY.addColorStop(0.5, 'rgba(255, 255, 255, 0)');
+            gradientY.addColorStop(0.5, 'rgba(0, 0, 0, 0)');
+            gradientY.addColorStop(1, 'rgba(0, 0, 0, 1)');
+            ctx.fillStyle = gradientY;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        };
+
+        drawColorPalette();
+
+        // 选择颜色
+        canvas.addEventListener('click', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const pixel = ctx.getImageData(x, y, 1, 1).data;
+            const color = `rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`;
+            updatePrimaryColor(color);
+            colorPickerPanel.classList.remove('open');
         });
 
         // 黑暗模式切换
@@ -1491,42 +1368,6 @@
                 this.classList.remove('floating');
             });
         });
-
-        // 卡片进入动画
-        window.addEventListener('DOMContentLoaded', () => {
-            const cards = document.querySelectorAll('.card');
-            cards.forEach((card, i) => {
-                setTimeout(() => {
-                    card.classList.add('card-animate-in');
-                }, 80 * i);
-            });
-        });
-
-        // 导航项切换效果
-        const navItems = document.querySelectorAll('.nav-item');
-        
-        navItems.forEach(item => {
-            item.addEventListener('click', function(e) {
-                // 移除所有活跃类和涟漪类
-                navItems.forEach(nav => {
-                    nav.classList.remove('active');
-                    nav.classList.remove('ripple-active');
-                });
-                
-                // 添加涟漪动画类
-                this.classList.add('ripple-active');
-                
-                // 动画完成后添加活跃类
-                setTimeout(() => {
-                    this.classList.add('active');
-                }, 600);
-            });
-        });
-
-        // 页面加载时初始化首页为活跃
-        if (navItems.length > 0) {
-            navItems[0].classList.add('active');
-        }
     </script>
 </body>
 </html>
